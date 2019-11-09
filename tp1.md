@@ -3,6 +3,9 @@
 Charbonnel Damien V1.1
 18/09/2019
 
+Ezhilarasan Karthike V1
+08/11/2019
+
 ## Partie 1 : DOCKER – Prise en main
 
 1. Installer DOCKER :heavy_check_mark:
