@@ -90,17 +90,31 @@ Charbonnel Damien V1.1
 4. Écrire des fichiers dessus : :heavy_check_mark:
 
     ```bash
-    docker exec -itu root nginx-alpine echo "hello from nginx" >> /home/root/toto.txt
-    docker exec -itu root debian-stable echo "hello from debian" >> /home/root/toto.txt
+    docker exec -t nginx-alpine echo "hello from nginx" >> /home/root/toto.txt
+    docker exec -t debian-stable echo "hello from debian" >> /home/root/toto.txt
     ```
 
 5. Vérifier l'état des fichiers dessus :hourglass:
 
 ## Partie 3 : DOCKER – Réseau
 
-1. Regarder le fonctionnement du "réseau" sur la documentation officielle Docker :hourglass:
-2. Essayer de relier les containers entre eux en effectuant un réseau privé entre eux. :hourglass:
-3. Vérifier si le ping fonctionne :hourglass:
+1. [Regarder le fonctionnement du "réseau" sur la documentation officielle Docker](https://docs.docker.com/v17.09/engine/userguide/networking/) :heavy_check_mark:
+2. Essayer de relier les containers entre eux en effectuant un réseau privé entre eux. :heavy_check_mark:
+
+    ```bash
+    docker network create -d bridge --subnet 192.168.0.0/24 --gateway 192.168.0.1 my_private_network
+    docker network connect my_private_network nginx-alpine
+    docker network connect my_private_network debian-stable
+    ```
+
+3. Vérifier si le ping fonctionne :heavy_check_mark:
+
+    ```bash
+    docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' debian-stable
+    docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' nginx-alpine
+    docker exec -t nginx-alpine ping #insert debian ip
+    ```
+
 4. Vérifier si le transfert de fichier fonctionne :hourglass:
 
 ## Partie 3 : DOCKER – Stack – Docker Compose
