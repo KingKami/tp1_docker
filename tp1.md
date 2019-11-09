@@ -70,14 +70,14 @@ Charbonnel Damien V1.1
 
 1. [Regarder le fonctionnement des "volumes" sur la documentation officielle Docker](https://docs.docker.com/storage/volumes/) :heavy_check_mark:
 
-2. Créer un volume nommer "VolContainer1"
+2. Créer un volume nommer "VolContainer1" :heavy_check_mark:
 
     ```bash
     docker volume create VolContainer1
     docker volume ls
     ```
 
-3. Partager ce volume entre différents containers
+3. Partager ce volume entre différents containers :heavy_check_mark:
 
     ```bash
     docker stop nginx-alpine
@@ -87,7 +87,12 @@ Charbonnel Damien V1.1
     docker run -d -t -i --name debian-stable --mount source=VolContainer1,target=/home/root/ debian:stable
     ```
 
-4. Écrire des fichiers dessus :hourglass:
+4. Écrire des fichiers dessus : :heavy_check_mark:
+
+    ```bash
+    docker exec -itu root nginx-alpine echo "hello from nginx" >> /home/root/toto.txt
+    docker exec -itu root debian-stable echo "hello from debian" >> /home/root/toto.txt
+    ```
 
 5. Vérifier l'état des fichiers dessus :hourglass:
 
