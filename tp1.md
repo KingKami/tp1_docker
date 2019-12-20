@@ -118,28 +118,81 @@ Ezhilarasan Karthike V1
     docker exec -t nginx-alpine ping #insert debian ip
     ```
 
-4. Vérifier si le transfert de fichier fonctionne :hourglass:
+## Partie 4 : DOCKER – Stack – Docker Compose
 
-## Partie 3 : DOCKER – Stack – Docker Compose
-
-1. Regarder le fonctionnement du "stack" sur la documentation officielle Docker :hourglass:
-2. Créer un fichier Yaml en version 3 afin de démarrer : :hourglass:
+1. [Regarder le fonctionnement du "stack" sur la documentation officielle Docker ](https://docs.docker.com/compose/) :heavy_check_mark:
+2. Créer un fichier Yaml en version 3 afin de démarrer : :heavy_check_mark:
     - 2 container ngnix:latest
     - un réseau isolé bridge entre eux
     - Un volume partagé
-3. Lancer la stack :hourglass:
-4. Vérifier le fonctionnement :hourglass:
+    ```yaml
+    version: "3"
+    services:
+    webserver:
+        image: nginx
+        container_name: "webserver"
+        restart: unless-stopped
+        tty: true
+        volumes:
+        - "VolContainer1:/VolContainer1"
+        ports:
+        - "80:80"
+        - "443:443"
+    webserver2:
+        image: nginx
+        container_name: "webserver2"
+        restart: unless-stopped
+        tty: true
+        ports:
+        - "81:81"
+        - "444:444"
+    volumes:
+        VolContainer1:
+    networks:
+    default:
+        external:
+        name: myNetwork
+    ```
+3. Lancer la stack :heavy_check_mark:
+    ```bash
+    docker-compose up -d
+    ```
 
-## Partie 4 : DOCKER – Création de Micro services
+## Partie 5 : DOCKER – Création de Micro services :heavy_check_mark:
 
-1. Récupérer l'image "httpd" (apache 2) :hourglass:
-2. Lancer le container en forwardant le port en mode automatique : :hourglass:
-    - docker run --name=httpd -d -p 80  httpd
-3. Regarder sur quel port est transféré le port 80 du serveur Apache :hourglass:
-4. Essayer d'y accéder via l'url local de la machine http://127.0.0.1:XXXX :hourglass:
-5. Lancer un autre container en forwardant le port en mode manuel (fixé): :hourglass:
-    - docker run --name=httpd -d -p 80:80  httpd
-6. Regarder sur quel port est transféré le port 80 du serveur Apache :hourglass:
-7. Essayer d'y accéder via l'url local de la machine http://127.0.0.1 :hourglass:
-8. Arrêter les deux containers actifs :hourglass:
-9. Supprimer les deux containers :hourglass:
+1. Récupérer l'image "httpd" (apache 2) :heavy_check_mark:
+    ```bash
+    docker pull httpd
+    ```
+2. Lancer le container en forwardant le port en mode automatique : :heavy_check_mark:
+    ```bash
+    docker run --name=httpd -d -p 80  httpd
+    ```
+3. Regarder sur quel port est transféré le port 80 du serveur Apache :heavy_check_mark:
+    ```bash
+    docker ps -a | grep httpd
+    ```
+4. Essayer d'y accéder via l'url local de la machine http://127.0.0.1:XXXX :heavy_check_mark:
+    ```bash
+    curl <ip>
+    ```
+5. Lancer un autre container en forwardant le port en mode manuel (fixé): :heavy_check_mark:
+    ```bash
+    docker run --name=httpd2 -d -p 80:80  httpd
+    ```
+6. Regarder sur quel port est transféré le port 80 du serveur Apache :heavy_check_mark:
+    ```bash
+    docker ps -a | grep httpd2
+    ```
+7. Essayer d'y accéder via l'url local de la machine http://127.0.0.1 :heavy_check_mark:
+    ```bash
+    curl <ip>
+    ```
+8. Arrêter les deux containers actifs :heavy_check_mark:
+    ```bash
+    docker stop httpd httpd2
+    ```
+9.  Supprimer les deux containers :heavy_check_mark:
+    ```bash
+    docker rm httpd httpd2
+    ```
